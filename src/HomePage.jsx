@@ -5,13 +5,13 @@ const HomePage = () => {
   const [employees, setEmployees] = useState([]);
   const navigate = useNavigate();
 
-  // Fetch employees from JSON Server
+  
   useEffect(() => {
     const fetchEmployees = async () => {
       try {
-        const response = await fetch('http://localhost:3000/employees'); // Use your deployed JSON Server URL here
+        const response = await fetch('http://localhost:3000/employees'); 
         const data = await response.json();
-        setEmployees(data); // Set the employee data to state
+        setEmployees(data); 
       } catch (error) {
         console.error('Error fetching employees:', error);
       }
@@ -20,7 +20,7 @@ const HomePage = () => {
     fetchEmployees();
   }, []);
 
-  // Delete Employee
+
   const deleteEmployee = async (id) => {
     try {
       const response = await fetch(`http://localhost:3000/employees/${id}`, {
@@ -31,7 +31,6 @@ const HomePage = () => {
         throw new Error(`Failed to delete employee with id ${id}`);
       }
   
-      // Filter the deleted employee out of the state
       setEmployees(employees.filter((emp) => emp.id !== id));
     } catch (error) {
       console.error('Error deleting employee:', error);
@@ -60,12 +59,9 @@ const HomePage = () => {
               <td>{emp.email}</td>
               <td>{emp.status}</td>
               <td>
-                {/* Edit Button */}
-               {/* Add button for Edit */}
 <button className='btn btn-danger me-2 mb-2 mt-2' onClick={() => navigate(`/edit/${emp.id}`)}>Edit</button>
 
                 
-                {/* Delete Button */}
                 <button  className='btn btn-success ms-2 mb-2 mt-2'  onClick={() => deleteEmployee(emp.id)}>Delete</button>
 
               </td>

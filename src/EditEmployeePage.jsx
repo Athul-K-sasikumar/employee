@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
 const EditEmployeePage = () => {
-  const { id } = useParams();  // Get the employee ID from URL
+  const { id } = useParams();  
   const navigate = useNavigate();
   const [employee, setEmployee] = useState({
     userName: '',
@@ -10,13 +10,12 @@ const EditEmployeePage = () => {
     status: 'Active'
   });
 
-  // Fetch the employee data by ID
   useEffect(() => {
     const fetchEmployee = async () => {
       try {
         const response = await fetch(`http://localhost:3000/employees`);
         const data = await response.json();
-        setEmployee(data);  // Set the employee data to the form
+        setEmployee(data);  
       } catch (error) {
         console.error('Error fetching employee:', error);
       }
@@ -45,7 +44,7 @@ const EditEmployeePage = () => {
         body: JSON.stringify(employee)
       });
 
-      navigate('/');  // Redirect back to home page after editing
+      navigate('/');  
     } catch (error) {
       console.error('Error updating employee:', error);
     }

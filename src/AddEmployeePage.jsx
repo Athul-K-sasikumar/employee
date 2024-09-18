@@ -18,14 +18,14 @@ const AddEmployeePage = ({ addEmployee }) => {
     e.preventDefault();
     
     await fetch(`http://localhost:3000/employees`, {
-      method: 'POST',  // Use POST instead of PUT for creating new resources
+      method: 'POST', 
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(employee)
     });
 
-    navigate('/');  // Redirect back to home page after adding the employee
+    navigate('/');  
 };
 
 
