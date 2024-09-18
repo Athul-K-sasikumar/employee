@@ -1,40 +1,63 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
-const EditEmployeePage = ({ employees, editEmployee }) => {
-  const { id } = useParams();  
+const EditEmployeePage = () => {
+  const { id } = useParams();  // Get the employee ID from URL
   const navigate = useNavigate();
-  const [employee, setEmployee] = useState(null);
+  const [employee, setEmployee] = useState({
+    userName: '',
+    email: '',
+    status: 'Active'
+  });
 
+  // Fetch the employee data by ID
   useEffect(() => {
-    const emp = employees.find(emp => emp.id === parseInt(id));
-    if (emp) {
-      setEmployee(emp);
-    }
-  }, [id, employees]);
+    const fetchEmployee = async () => {
+      try {
+        const response = await fetch(`http://localhost:3000/employees`);
+        const data = await response.json();
+        setEmployee(data);  // Set the employee data to the form
+      } catch (error) {
+        console.error('Error fetching employee:', error);
+      }
+    };
+
+    fetchEmployee();
+  }, [id]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setEmployee({ ...employee, [name]: value });
+    setEmployee({
+      ...employee,
+      [name]: value
+    });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    editEmployee(employee);  
-    navigate('/');  
-  };
+    
+    try {
+      await fetch(`http://localhost:3000/employees`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(employee)
+      });
 
-  if (!employee) {
-    return <p>Employee not found</p>;
-  }
+      navigate('/');  // Redirect back to home page after editing
+    } catch (error) {
+      console.error('Error updating employee:', error);
+    }
+  };
 
   return (
-    <div style={{justifyContent:'center'}}>
-      <h2 className='text-center'>Edit Employee</h2>
-      <div  style={{justifyItems:'center',marginLeft:'30%'}}>
-          <form  onSubmit={handleSubmit}>
-            <input
-              className='me-3 text-center '
+    <div>
+      <h2 className='text-center text-danger fw-bolder pb-3'>Edit Employee</h2>
+     <div style={{justifyItems:'center',marginLeft:'30%'}} >
+          <form onSubmit={handleSubmit}>
+            <input 
+             className='me-3 text-center'
               type="text" 
               name="userName" 
               placeholder="Username" 
@@ -52,7 +75,6 @@ const EditEmployeePage = ({ employees, editEmployee }) => {
               required 
             />
             <select 
-             className='me-3'
               name="status" 
               value={employee.status} 
               onChange={handleChange}
@@ -60,9 +82,9 @@ const EditEmployeePage = ({ employees, editEmployee }) => {
               <option value="Active">Active</option>
               <option value="Inactive">Inactive</option>
             </select>
-            <button  className='btn btn-primary  mt-2 mb-2' type="submit">Save Changes</button>
+            <button className='btn btn-success ms-2 ' type="submit">Save Changes</button>
           </form>
-      </div>
+     </div  >
     </div>
   );
 };

@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import AddEmployeePage from './AddEmployeePage';
 import Nav1 from './Nav1';
 import EditEmployeePage from './EditEmployeePage';
+import HomePage from './HomePage';
 function App() {
 
   const [employees, setEmployees] = useState([]);
@@ -19,13 +20,23 @@ function App() {
     setEditingEmployee(null);
   };
 
-  const deleteEmployee = (id) => {
-    setEmployees(employees.filter(emp => emp.id !== id));
+  const deleteEmployee = async (id) => {
+    try {
+      const response = await fetch(`http://localhost:3000/employees/${id}`, {
+        method: 'DELETE'
+      });
+  
+      if (response.ok) {
+        setEmployees(employees.filter((emp) => emp.id !== id));
+      } else {
+        console.error('Error deleting employee:', response.status);
+      }
+    } catch (error) {
+      console.error('Error deleting employee:', error);
+    }
   };
-
-  const handleEditClick = (employee) => {
-    setEditingEmployee(employee);
-  };
+  
+  
 
 
 
@@ -48,10 +59,10 @@ function App() {
         <Route 
           path="/" 
           element={
-            <Home 
+            <HomePage 
               employees={employees} 
               deleteEmployee={deleteEmployee} 
-              handleEditClick={handleEditClick}
+             
               editingEmployee={editingEmployee}
               editEmployee={editEmployee}
             />
@@ -62,10 +73,7 @@ function App() {
           element={<AddEmployeePage addEmployee={addEmployee} />} 
         />
 
-<Route 
-          path="/edit-employee/:id" 
-          element={<EditEmployeePage employees={employees} editEmployee={editEmployee} />} 
-        />
+ <Route path="/edit/:id" element={<EditEmployeePage />} />
       </Routes>
     </Router>
    

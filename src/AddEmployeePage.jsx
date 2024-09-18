@@ -10,15 +10,24 @@ const AddEmployeePage = ({ addEmployee }) => {
     setEmployee({ ...employee, [name]: value });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    addEmployee(employee);
-    navigate('/');
-  };
-
-
-
   
+
+
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    await fetch(`http://localhost:3000/employees`, {
+      method: 'POST',  // Use POST instead of PUT for creating new resources
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(employee)
+    });
+
+    navigate('/');  // Redirect back to home page after adding the employee
+};
+
 
   return (
     <div>
