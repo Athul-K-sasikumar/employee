@@ -5,6 +5,7 @@ import AddEmployeePage from './AddEmployeePage';
 import Nav1 from './Nav1';
 import EditEmployeePage from './EditEmployeePage';
 import HomePage from './HomePage';
+import serverUrl from './serverUrl';
 function App() {
 
   const [employees, setEmployees] = useState([]);
@@ -21,7 +22,7 @@ function App() {
 
   const deleteEmployee = async (id) => {
     try {
-      const response = await fetch(`http://localhost:3000/employees/${id}`, {
+      const response = await fetch(`${serverUrl}/${id}`, {
         method: 'DELETE'
       });
   

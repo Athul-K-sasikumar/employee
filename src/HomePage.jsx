@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import serverUrl from './serverUrl';
 
 const HomePage = () => {
   const [employees, setEmployees] = useState([]);
@@ -9,7 +10,7 @@ const HomePage = () => {
   useEffect(() => {
     const fetchEmployees = async () => {
       try {
-        const response = await fetch('http://localhost:3000/employees'); 
+        const response = await fetch(`${serverUrl}/employees`); 
         const data = await response.json();
         setEmployees(data); 
       } catch (error) {
@@ -23,7 +24,7 @@ const HomePage = () => {
 
   const deleteEmployee = async (id) => {
     try {
-      const response = await fetch(`http://localhost:3000/employees/${id}`, {
+      const response = await fetch(`${serverUrl}/employees/${id}`, {
         method: 'DELETE'
       });
   

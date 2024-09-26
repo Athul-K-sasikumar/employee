@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import serverUrl from './serverUrl';
 
 const AddEmployeePage = ({ addEmployee }) => {
   const [employee, setEmployee] = useState({ userName: '', email: '', status: 'Active' });
@@ -17,7 +18,7 @@ const AddEmployeePage = ({ addEmployee }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    await fetch(`http://localhost:3000/employees`, {
+    await fetch(`${serverUrl}/employees`, {
       method: 'POST', 
       headers: {
         'Content-Type': 'application/json'

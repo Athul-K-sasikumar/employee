@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import serverUrl from './serverUrl';
 
 const EditEmployeePage = () => {
   const { id } = useParams();  
@@ -13,7 +14,7 @@ const EditEmployeePage = () => {
   useEffect(() => {
     const fetchEmployee = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/employees`);
+        const response = await fetch(`${serverUrl}/${id}`);
         const data = await response.json();
         setEmployee(data);  
       } catch (error) {
@@ -36,7 +37,7 @@ const EditEmployeePage = () => {
     e.preventDefault();
     
     try {
-      await fetch(`http://localhost:3000/employees`, {
+      await fetch(`${serverUrl}/employees/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
